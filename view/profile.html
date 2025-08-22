@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .badge-icon {
+            transition: all 0.3s ease;
+        }
+        .badge-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.7));
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Profile Header -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+            <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-32 md:h-40 relative">
+                <div class="absolute -bottom-16 left-6 md:left-8">
+                    <div class="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white bg-white shadow-lg overflow-hidden">
+                        <img id="profile-avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Student Avatar" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <button class="absolute top-4 right-4 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-opacity-100 transition">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+            <div class="pt-20 md:pt-24 px-6 pb-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 id="student-name" class="text-2xl md:text-3xl font-bold text-gray-800">Nguyễn Thị Mai</h1>
+                        <p class="text-gray-600 mt-1">Lớp: <span id="student-class" class="font-medium">12A1</span></p>
+                    </div>
+                    <div class="bg-orange-100 text-orange-800 px-4 py-2 rounded-full font-medium flex items-center">
+                        <i class="fas fa-star mr-2 text-orange-500"></i>
+                        <span id="student-points">1,245</span> điểm
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Learning Progress -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Tiến trình học tập</h2>
+                    <span class="text-orange-600 font-medium">65%</span>
+                </div>
+                <div class="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full" style="width: 65%"></div>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Bài học đã hoàn thành</p>
+                        <p class="text-xl font-bold text-orange-600">24/36</p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Bài tập đã làm</p>
+                        <p class="text-xl font-bold text-orange-600">18/24</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Progress -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Kết quả kiểm tra</h2>
+                    <span class="text-orange-600 font-medium">78%</span>
+                </div>
+                <div class="flex justify-center">
+                    <div class="relative w-32 h-32">
+                        <canvas id="testChart"></canvas>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col">
+                            <span class="text-2xl font-bold text-orange-600">78%</span>
+                            <span class="text-sm text-gray-500">Điểm trung bình</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-800">Thành tích</h2>
+                <a href="#" class="text-orange-600 font-medium flex items-center">
+                    Xem tất cả <i class="fas fa-chevron-right ml-1 text-sm"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <!-- Badge 1 -->
+                <div class="flex flex-col items-center">
+                    <div class="badge-icon w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 text-2xl mb-2">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <p class="text-sm font-medium text-center">Học sinh xuất sắc</p>
+                    <p class="text-xs text-gray-500">Tháng 3</p>
+                </div>
+                
+                <!-- Badge 2 -->
+                <div class="flex flex-col items-center">
+                    <div class="badge-icon w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 text-2xl mb-2">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <p class="text-sm font-medium text-center">Điểm cao nhất</p>
+                    <p class="text-xs text-gray-500">Môn Toán</p>
+                </div>
+                
+                <!-- Badge 3 -->
+                <div class="flex flex-col items-center">
+                    <div class="badge-icon w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 text-2xl mb-2">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <p class="text-sm font-medium text-center">Chuyên cần</p>
+                    <p class="text-xs text-gray-500">30 ngày</p>
+                </div>
+                
+                <!-- Badge 4 -->
+                <div class="flex flex-col items-center">
+                    <div class="badge-icon w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 text-2xl mb-2">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <p class="text-sm font-medium text-center">Sáng tạo</p>
+                    <p class="text-xs text-gray-500">Dự án STEM</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">Hoạt động gần đây</h2>
+            
+            <div class="space-y-4">
+                <!-- Activity 1 -->
+                <div class="flex items-start">
+                    <div class="bg-orange-100 p-2 rounded-full mr-4 text-orange-600">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Đã hoàn thành bài học <span class="text-orange-600">Đại số tuyến tính</span></p>
+                        <p class="text-sm text-gray-500 mt-1">Hôm nay, 14:30</p>
+                    </div>
+                </div>
+                
+                <!-- Activity 2 -->
+                <div class="flex items-start">
+                    <div class="bg-orange-100 p-2 rounded-full mr-4 text-orange-600">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Đã nộp bài kiểm tra <span class="text-orange-600">Hóa học</span> với điểm số 9.5</p>
+                        <p class="text-sm text-gray-500 mt-1">Hôm qua, 10:15</p>
+                    </div>
+                </div>
+                
+                <!-- Activity 3 -->
+                <div class="flex items-start">
+                    <div class="bg-orange-100 p-2 rounded-full mr-4 text-orange-600">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Nhận huy hiệu <span class="text-orange-600">Học sinh chăm chỉ</span></p>
+                        <p class="text-sm text-gray-500 mt-1">2 ngày trước</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="mt-6 w-full py-2 bg-orange-50 text-orange-600 font-medium rounded-lg hover:bg-orange-100 transition">
+                Xem thêm hoạt động
+            </button>
+        </div>
+    </div>
+    <script src="../js/profile.js"></script>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+
+        // fetch('footer.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('footer-placeholder').innerHTML = data;
+        //     });
+    </script>
+</body>
+</html>

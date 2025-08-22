@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chibi Master - Học Tiếng Nhật Hiệu Quả</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff9f2;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .kanji-card {
+            transition: all 0.3s ease;
+        }
+        
+        .kanji-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(237, 137, 54, 0.2);
+        }
+        
+        .menu-item::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #ed8936;
+            transition: width 0.3s;
+        }
+        
+        .menu-item:hover::after {
+            width: 100%;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-orange-400 to-orange-600 text-white py-12 md:py-20">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Học tiếng Nhật thật dễ dàng!</h2>
+                <p class="text-lg md:text-xl mb-6">Khám phá phương pháp học hiệu quả với lộ trình cá nhân hóa, giúp bạn chinh phục tiếng Nhật nhanh chóng.</p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-white text-orange-600 hover:bg-gray-100 px-6 py-3 rounded-full font-bold transition duration-300 shadow-lg">Bắt đầu học ngay</button>
+                    <button class="bg-transparent border-2 border-white hover:bg-white hover:text-orange-600 px-6 py-3 rounded-full font-bold transition duration-300">Xem lộ trình</button>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="https://cdn.pixabay.com/photo/2017/08/10/03/47/girl-2617866_1280.png" alt="Học tiếng Nhật" class="w-full max-w-md floating">
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Tiến trình học tập của bạn</h2>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-12">
+                <!-- Progress Ring -->
+                <div class="relative w-48 h-48">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <circle class="text-gray-200" stroke-width="8" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                        <circle class="progress-ring__circle text-orange-500" stroke-width="8" stroke-linecap="round" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" stroke-dasharray="251.2" stroke-dashoffset="75.36" />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                        <span class="text-4xl font-bold text-orange-600">70%</span>
+                        <span class="text-gray-600">Hoàn thành</span>
+                    </div>
+                </div>
+                
+                <!-- Progress Details -->
+                <div class="space-y-6 max-w-md">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700 font-medium">Từ vựng N5</span>
+                            <span class="text-orange-600 font-bold">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-orange-500 h-2.5 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700 font-medium">Ngữ pháp N5</span>
+                            <span class="text-orange-600 font-bold">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-orange-500 h-2.5 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700 font-medium">Kanji N5</span>
+                            <span class="text-orange-600 font-bold">60%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-orange-500 h-2.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="mt-4 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-medium transition duration-300 shadow-md">Tiếp tục học</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-12 bg-orange-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">Phương pháp học đa dạng</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-book-open text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Học từ vựng</h3>
+                    <p class="text-gray-600 mb-4">Học từ vựng qua hình ảnh, flashcard và ngữ cảnh giúp ghi nhớ lâu hơn.</p>
+                    <a href="tu_vung.html" class="text-orange-500 font-medium flex items-center">
+                        Bắt đầu học
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-pen-fancy text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tập viết Kanji</h3>
+                    <p class="text-gray-600 mb-4">Luyện viết chữ Hán theo từng nét với hướng dẫn chi tiết và phản hồi tức thì.</p>
+                    <a href="#" class="text-orange-500 font-medium flex items-center">
+                        Luyện viết ngay
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-microphone-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Luyện nói</h3>
+                    <p class="text-gray-600 mb-4">Luyện phát âm chuẩn với công nghệ nhận diện giọng nói AI tiên tiến.</p>
+                    <a href="#" class="text-orange-500 font-medium flex items-center">
+                        Thực hành nói
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-tasks text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Bài kiểm tra</h3>
+                    <p class="text-gray-600 mb-4">Đánh giá năng lực qua các bài test JLPT mô phỏng thực tế.</p>
+                    <a href="#" class="text-orange-500 font-medium flex items-center">
+                        Làm bài test
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-brain text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Ôn tập thông minh</h3>
+                    <p class="text-gray-600 mb-4">Hệ thống ôn tập khoa học giúp bạn ghi nhớ kiến thức lâu dài.</p>
+                    <a href="#" class="text-orange-500 font-medium flex items-center">
+                        Ôn tập ngay
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Theo dõi tiến độ</h3>
+                    <p class="text-gray-600 mb-4">Phân tích chi tiết quá trình học giúp bạn cải thiện hiệu quả.</p>
+                    <a href="#" class="text-orange-500 font-medium flex items-center">
+                        Xem báo cáo
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kanji of the Day -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Kanji mỗi ngày</h2>
+            
+            <div class="max-w-md mx-auto bg-orange-50 rounded-xl overflow-hidden shadow-lg">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <span class="text-gray-600">Hôm nay</span>
+                            <h3 class="text-5xl font-bold text-orange-600 mb-2">日</h3>
+                            <p class="text-gray-700 font-medium">Onyomi: ニチ, ジツ</p>
+                            <p class="text-gray-700 font-medium">Kunyomi: ひ, -か, -び</p>
+                        </div>
+                        <div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-bold">N5</div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-800 font-bold mb-2">Ý nghĩa:</p>
+                        <p class="text-gray-700">Ngày, mặt trời, Nhật Bản</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-800 font-bold mb-2">Ví dụ:</p>
+                        <ul class="space-y-2">
+                            <li class="text-gray-700"><span class="font-bold">日本 (にほん)</span> - Nhật Bản</li>
+                            <li class="text-gray-700"><span class="font-bold">今日 (きょう)</span> - hôm nay</li>
+                            <li class="text-gray-700"><span class="font-bold">日曜日 (にちようび)</span> - Chủ nhật</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full font-medium transition duration-300">
+                            <i class="fas fa-volume-up mr-2"></i> Nghe phát âm
+                        </button>
+                        <button class="border border-orange-500 text-orange-500 hover:bg-orange-50 px-4 py-2 rounded-full font-medium transition duration-300">
+                            <i class="fas fa-pen mr-2"></i> Luyện viết
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Kanji -->
+    <section class="py-12 bg-orange-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Kanji phổ biến</h2>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">人</div>
+                    <p class="text-gray-700 font-medium">Người</p>
+                    <p class="text-gray-500 text-sm">Nhân</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">水</div>
+                    <p class="text-gray-700 font-medium">Nước</p>
+                    <p class="text-gray-500 text-sm">Thủy</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">火</div>
+                    <p class="text-gray-700 font-medium">Lửa</p>
+                    <p class="text-gray-500 text-sm">Hỏa</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">山</div>
+                    <p class="text-gray-700 font-medium">Núi</p>
+                    <p class="text-gray-500 text-sm">Sơn</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">川</div>
+                    <p class="text-gray-700 font-medium">Sông</p>
+                    <p class="text-gray-500 text-sm">Xuyên</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">木</div>
+                    <p class="text-gray-700 font-medium">Cây</p>
+                    <p class="text-gray-500 text-sm">Mộc</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">月</div>
+                    <p class="text-gray-700 font-medium">Mặt trăng</p>
+                    <p class="text-gray-500 text-sm">Nguyệt</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">田</div>
+                    <p class="text-gray-700 font-medium">Ruộng</p>
+                    <p class="text-gray-500 text-sm">Điền</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">口</div>
+                    <p class="text-gray-700 font-medium">Miệng</p>
+                    <p class="text-gray-500 text-sm">Khẩu</p>
+                </div>
+                <div class="kanji-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">女</div>
+                    <p class="text-gray-700 font-medium">Phụ nữ</p>
+                    <p class="text-gray-500 text-sm">Nữ</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium transition duration-300 shadow-md">
+                    Xem thêm Kanji <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Học viên nói gì về chúng tôi</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-orange-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mr-4">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Nguyễn Thị Mai</h4>
+                            <div class="flex text-orange-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Mình đã học tiếng Nhật được 6 tháng trên Chibi Master và đạt N4. Phương pháp học rất hiệu quả, đặc biệt là phần luyện viết Kanji và flashcard từ vựng."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-orange-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mr-4">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Trần Văn Nam</h4>
+                            <div class="flex text-orange-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Mình thích nhất là hệ thống ôn tập thông minh, nó giúp mình nhớ từ vựng lâu hơn. Giao diện đẹp, dễ sử dụng trên cả điện thoại và máy tính."</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-orange-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mr-4">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Lê Hoàng Anh</h4>
+                            <div class="flex text-orange-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Phần luyện nói với AI rất hữu ích, giúp mình tự tin hơn khi giao tiếp. Sau 3 tháng học mình đã có thể tự giới thiệu bản thân bằng tiếng Nhật khá trôi chảy."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6">Sẵn sàng chinh phục tiếng Nhật?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Đăng ký ngay hôm nay để nhận ưu đãi đặc biệt và bắt đầu hành trình học tập của bạn!</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <button class="bg-white text-orange-600 hover:bg-gray-100 px-8 py-3 rounded-full font-bold transition duration-300 shadow-lg text-lg">Đăng ký miễn phí</button>
+                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-orange-600 px-8 py-3 rounded-full font-bold transition duration-300 text-lg">Tìm hiểu thêm</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-2">日</div>
+                        <h3 class="text-xl font-bold">Chibi<span class="text-orange-500">Master</span></h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Nền tảng học tiếng Nhật hiệu quả nhất cho người Việt.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-orange-500 transition"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Học tập</h4>
+                    <ul class="space-y-2">
+                        <li><a href="tu_vung.html" class="text-gray-400 hover:text-orange-500 transition">Từ vựng</a></li>
+                        <li><a href="writing.html" class="text-gray-400 hover:text-orange-500 transition">Luyện viết</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Kanji</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Luyện nghe</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Luyện nói</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Tài nguyên</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Tài liệu JLPT</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Mẫu đề thi</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Từ điển</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Blog học tập</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Hỏi đáp</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Liên hệ</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-orange-500 mt-1 mr-2"></i>
+                            <span class="text-gray-400">12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-orange-500 mt-1 mr-2"></i>
+                            <span class="text-gray-400">1900 636 999</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-orange-500 mt-1 mr-2"></i>
+                            <span class="text-gray-400">support@Chibimaster.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+                <p>© 2023 Chibi Master. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/index.js"></script>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                // Re-attach event listener for mobile menu after header is loaded
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', function() {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chibi Japanese - Học từ vựng tiếng Nhật</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fff7f0;
+        }
+        
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.2;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b35;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .flashcard {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(135deg, #ff9a3c, #ff6b35);
+            color: white;
+        }
+        
+        .flashcard-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+        
+        .kanji {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 640px) {
+            .kanji {
+                font-size: 2.5rem;
+            }
+            
+            .vocab-card {
+                padding: 15px;
+            }
+            
+            .flashcard {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="header-placeholder"></div>
+    <div class="watermark">Chibi Japanese</div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-orange-600 mb-2">Chibi Japanese</h1>
+            <p class="text-xl text-orange-500">Học từ vựng tiếng Nhật vui vẻ!</p>
+        </header>
+        
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden mb-10 vocab-card">
+            <div class="p-6 sm:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Từ vựng hôm nay</h2>
+                    <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Mới</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500 mb-1">Kanji</label>
+                            <div class="text-3xl font-bold text-orange-600 kanji-display">日本語</div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500 mb-1">Hiragana</label>
+                            <div class="text-xl text-gray-700 hiragana-display">にほんご</div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500 mb-1">Romaji</label>
+                            <div class="text-lg font-mono text-gray-800 romaji-display">Nihongo</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500 mb-1">Nghĩa tiếng Việt</label>
+                            <div class="text-lg text-gray-800 meaning-display">Tiếng Nhật</div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500 mb-1">Phát âm</label>
+                            <button id="playAudio" class="flex items-center bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded-lg transition">
+                                <i class="fas fa-volume-up mr-2"></i>
+                                <span>Nghe phát âm</span>
+                            </button>
+                            <audio id="wordAudio" src="https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E6%97%A5%E6%9C%AC%E8%AA%9E&kana=%E3%81%AB%E3%81%BB%E3%82%93%E3%81%94"></audio>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                    <button id="addToReview" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-lg font-medium transition flex items-center justify-center">
+                        <i class="fas fa-plus-circle mr-2"></i>
+                        <span>Thêm vào danh sách ôn tập</span>
+                    </button>
+                    <button id="nextWord" class="flex-1 bg-white border border-orange-500 text-orange-500 hover:bg-orange-50 px-4 py-3 rounded-lg font-medium transition">
+                        Từ tiếp theo
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Flashcard ôn tập</h2>
+            
+            <div class="flashcard mb-8" id="flashcard">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="kanji" id="fc-kanji">日本語</div>
+                        <div class="text-xl" id="fc-hiragana">にほんご</div>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="text-2xl font-bold text-orange-600 mb-4" id="fc-romaji">Nihongo</div>
+                        <div class="text-xl text-gray-700" id="fc-meaning">Tiếng Nhật</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center gap-4 mb-10">
+                <button id="flipCard" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Lật thẻ
+                </button>
+                <button id="nextCard" class="bg-white border border-orange-500 text-orange-500 hover:bg-orange-50 px-6 py-2 rounded-lg font-medium transition">
+                    Thẻ tiếp theo
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Danh sách ôn tập</h3>
+                    <div class="space-y-3" id="reviewList">
+                        <!-- Review items will be added here -->
+                        <div class="text-center text-gray-500 py-4">Danh sách ôn tập trống</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/tu_vung.js"></script>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                // Re-attach event listener for mobile menu after header is loaded
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', function() {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+        // fetch('footer.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('footer-placeholder').innerHTML = data;
+        //     });
+    </script>
+</body>
+</html>

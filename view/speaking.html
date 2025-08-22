@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Speaking Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #fff7f0;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
+                <i class="fas fa-microphone-alt mr-2"></i>Luyện nói tiếng Nhật
+            </h1>
+            <p class="text-orange-500">Cải thiện phát âm và tự tin giao tiếp</p>
+        </header>
+        
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Chọn chủ đề luyện nói</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Giới thiệu bản thân
+                </button>
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Đặt món ăn
+                </button>
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Hỏi đường
+                </button>
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Mua sắm
+                </button>
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Thời tiết
+                </button>
+                <button class="topic-btn bg-orange-100 text-orange-700 px-4 py-3 rounded-lg font-medium hover:bg-orange-200 transition">
+                    Sở thích
+                </button>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Thực hành</h2>
+            <div class="mb-6">
+                <p class="text-gray-700 mb-2">Nói câu sau:</p>
+                <div class="bg-orange-50 p-4 rounded-lg text-lg font-medium text-orange-800">
+                    <span id="sentence-to-speak">はじめまして。どうぞよろしくおねがいします。</span>
+                </div>
+            </div>
+            
+            <div class="flex justify-center items-center space-x-4 mb-6">
+                <button id="record-btn" class="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full text-2xl transition transform hover:scale-105">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                    <i class="fas fa-stop"></i>
+                </button>
+                <button id="play-btn" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full text-2xl transition transform hover:scale-105">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+            
+            <div id="result" class="text-center text-lg font-medium text-gray-700">
+                <!-- Speech recognition result will appear here -->
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button id="next-sentence-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium transition">
+                    Câu tiếp theo <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/speaking.js"></script>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+
+        // fetch('footer.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('footer-placeholder').innerHTML = data;
+        //     });
+    </script>
+</body>
+</html>

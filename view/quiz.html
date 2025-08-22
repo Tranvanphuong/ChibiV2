@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語テスト - Japanese Language Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #fff7f0;
+        }
+        
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        @media (max-width: 640px) {
+            .question-container {
+                padding: 1rem;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="header-placeholder"></div>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
+                <i class="fas fa-language mr-2"></i>日本語テスト
+            </h1>
+            <p class="text-orange-500">Japanese Language Proficiency Test (JLPT N5)</p>
+        </header>
+        
+        <!-- Progress Bar -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-orange-600 font-medium">進捗状況</span>
+                <span class="text-orange-600 font-medium"><span id="current-question">1</span>/<span id="total-questions">10</span></span>
+            </div>
+            <div class="w-full bg-orange-200 rounded-full h-4">
+                <div id="progress-bar" class="progress-bar bg-orange-500 h-4 rounded-full" style="width: 10%"></div>
+            </div>
+        </div>
+        
+        <!-- Score Display (hidden initially) -->
+        <div id="score-container" class="hidden bg-white rounded-lg shadow-lg p-6 mb-8 text-center">
+            <h2 class="text-2xl font-bold text-orange-600 mb-4">テスト結果</h2>
+            <div class="text-5xl font-bold text-orange-500 mb-4">
+                <span id="score">0</span>/<span id="max-score">10</span>
+            </div>
+            <p id="score-message" class="text-gray-700 mb-4"></p>
+            <button id="restart-btn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition">
+                もう一度試す <i class="fas fa-redo ml-2"></i>
+            </button>
+        </div>
+        
+        <!-- Question Container -->
+        <div id="question-container" class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Question -->
+            <div class="p-6 md:p-8 border-b border-orange-100">
+                <div class="flex items-start">
+                    <div class="bg-orange-100 text-orange-600 font-bold rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                        Q
+                    </div>
+                    <p id="question-text" class="text-lg md:text-xl text-gray-800 font-medium">Loading question...</p>
+                </div>
+            </div>
+            
+            <!-- Options -->
+            <div id="options-container" class="options-container grid grid-cols-1 md:grid-cols-2 gap-4 p-6 md:p-8">
+                <!-- Options will be inserted here by JavaScript -->
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="px-6 md:px-8 pb-6 md:pb-8">
+                <button id="submit-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-full transition transform hover:scale-105">
+                    回答を送信 <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 text-center">
+                <div id="feedback-icon" class="text-5xl mb-4">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+                <h3 id="feedback-title" class="text-2xl font-bold mb-2">正解です！</h3>
+                <p id="feedback-text" class="text-gray-700 mb-4">Your answer was correct!</p>
+                <button id="next-btn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition">
+                    次の質問 <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/quiz.js"></script>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+
+        // fetch('footer.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('footer-placeholder').innerHTML = data;
+        //     });
+    </script>
+</body>
+</html>
