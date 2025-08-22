@@ -145,7 +145,7 @@
                     </div>
                     <h3 class="text-xl font-bold mb-2 text-gray-800">Học từ vựng</h3>
                     <p class="text-gray-600 mb-4">Học từ vựng qua hình ảnh, flashcard và ngữ cảnh giúp ghi nhớ lâu hơn.</p>
-                    <a href="tu_vung.html" class="text-orange-500 font-medium flex items-center">
+                    <a href="view/tu_vung.html" class="text-orange-500 font-medium flex items-center">
                         Bắt đầu học
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
@@ -431,8 +431,8 @@
                 <div>
                     <h4 class="text-lg font-bold mb-4">Học tập</h4>
                     <ul class="space-y-2">
-                        <li><a href="tu_vung.html" class="text-gray-400 hover:text-orange-500 transition">Từ vựng</a></li>
-                        <li><a href="writing.html" class="text-gray-400 hover:text-orange-500 transition">Luyện viết</a></li>
+                        <li><a href="view/tu_vung.html" class="text-gray-400 hover:text-orange-500 transition">Từ vựng</a></li>
+                        <li><a href="view/writing.html" class="text-gray-400 hover:text-orange-500 transition">Luyện viết</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Kanji</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Luyện nghe</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-orange-500 transition">Luyện nói</a></li>
@@ -478,7 +478,7 @@
     <div id="footer-placeholder"></div>
     <script src="../js/index.js"></script>
     <script>
-        fetch('header.html')
+        fetch('../view/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;
@@ -491,7 +491,7 @@
                     });
                 }
             });
-        fetch('footer.html')
+        fetch('../view/footer.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('footer-placeholder').innerHTML = data;
