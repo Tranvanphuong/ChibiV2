@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Từ Vựng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        .width-180 {
+            width: 180px;
+        }
+        .bg-orange-50 {
+            background-color: #fff7ed;
+        }
+        .border-orange-200 {
+            border-color: #fed7aa;
+        }
+        .hover\:bg-orange-100:hover {
+            background-color: #ffedd5;
+        }
+        .text-orange-600 {
+            color: #ea580c;
+        }
+        .bg-orange-500 {
+            background-color: #f97316;
+        }
+        .hover\:bg-orange-600:hover {
+            background-color: #ea580c;
+        }
+        .flashcard-thumb {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+        .audio-icon {
+            cursor: pointer;
+            color: #f97316;
+            transition: all 0.2s;
+        }
+        .audio-icon:hover {
+            color: #ea580c;
+            transform: scale(1.1);
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="header-placeholder"></div>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-orange-600">Quản lý Từ Vựng</h1>
+            <p class="text-gray-600">Quản lý từ vựng tiếng Nhật cho ứng dụng học tập</p>
+        </header>
+
+        <!-- Controls: Class ID Filter and Add Vocabulary Button -->
+        <div class="mb-6 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <label for="filterClassId" class=" width-180 block text-sm font-medium text-gray-700">Lọc theo Lớp:</label>
+                <select id="filterClassId" name="filterClassId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                    <option value="1" selected>Lớp 1</option>
+                    <option value="2">Lớp 2</option>
+                    <option value="3">Lớp 3</option>
+                    <option value="4">Lớp 4</option>
+                    <option value="5">Lớp 5</option>
+                    <option value="6">Lớp 6</option>
+                </select>
+            </div>
+            <button id="addVocabBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                Thêm từ vựng
+            </button>
+        </div>
+
+        <!-- Vocabulary Table -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-orange-200">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-orange-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Lớp</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Kanji</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Hiragana</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Romaji</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Nghĩa</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Audio</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Flashcard</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocabTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6 flex justify-center">
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Previous</span>
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <a href="#" aria-current="page" class="z-10 bg-orange-50 border-orange-500 text-orange-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    1
+                </a>
+                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    2
+                </a>
+                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    3
+                </a>
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Next</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Add/Edit Vocabulary Modal -->
+    <div id="vocabModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 id="modalTitle" class="text-xl font-bold text-orange-600">Thêm từ vựng mới</h3>
+                        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="vocabForm" class="space-y-4">
+                        <input type="hidden" id="vocabId">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Class -->
+                            <div>
+                                <label for="classId" class="block text-sm font-medium text-gray-700">Lớp</label>
+                                <select id="classId" name="classId" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                                    <option value="">Chọn lớp</option>
+                                    <option value="1">Lớp 1</option>
+                                    <option value="2">Lớp 2</option>
+                                    <option value="3">Lớp 3</option>
+                                    <option value="4">Lớp 4</option>
+                                    <option value="5">Lớp 5</option>
+                                    <option value="6">Lớp 6</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Sort Order -->
+                            <div>
+                                <label for="sortOrder" class="block text-sm font-medium text-gray-700">Thứ tự hiển thị</label>
+                                <input type="number" id="sortOrder" name="sortOrder" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Kanji -->
+                            <div>
+                                <label for="kanji" class="block text-sm font-medium text-gray-700">Kanji</label>
+                                <input type="text" id="kanji" name="kanji" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                            
+                            <!-- Hiragana -->
+                            <div>
+                                <label for="hiragana" class="block text-sm font-medium text-gray-700">Hiragana <span class="text-red-500">*</span></label>
+                                <input type="text" id="hiragana" name="hiragana" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Romaji -->
+                            <div>
+                                <label for="romaji" class="block text-sm font-medium text-gray-700">Romaji <span class="text-red-500">*</span></label>
+                                <input type="text" id="romaji" name="romaji" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                            
+                            <!-- Vietnamese Meaning -->
+                            <div>
+                                <label for="meaning" class="block text-sm font-medium text-gray-700">Nghĩa tiếng Việt <span class="text-red-500">*</span></label>
+                                <input type="text" id="meaning" name="meaning" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                        </div>
+                        
+                        <!-- Audio URL -->
+                        <div>
+                            <label for="audioUrl" class="block text-sm font-medium text-gray-700">Audio URL</label>
+                            <input type="url" id="audioUrl" name="audioUrl" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            <div id="audioPreview" class="mt-2 hidden">
+                                <audio controls class="w-full">
+                                    <source src="" type="audio/mp3">
+                                    Trình duyệt của bạn không hỗ trợ phát audio.
+                                </audio>
+                            </div>
+                        </div>
+                        
+                        <!-- Image IDs (simplified for now, assuming direct input or selection) -->
+                        <div>
+                            <label for="imageIds" class="block text-sm font-medium text-gray-700">Image IDs (comma-separated)</label>
+                            <input type="text" id="imageIds" name="imageIds" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border" placeholder="e.g., 1,2,3">
+                            <div id="frontImagePreview" class="mt-2 hidden">
+                                <img src="" alt="Front preview" class="flashcard-thumb mx-auto">
+                            </div>
+                            <div id="backImagePreview" class="mt-2 hidden">
+                                <img src="" alt="Back preview" class="flashcard-thumb mx-auto">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-3 pt-4">
+                            <button type="button" id="cancelBtn" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                Hủy
+                            </button>
+                            <button type="submit" id="submitBtn" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../js/admin/list_vocabulary.js"></script>
+    <script>
+        fetch('../header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                // Re-attach event listener for mobile menu after header is loaded
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', function() {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+        // fetch('footer.html')
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('footer-placeholder').innerHTML = data;
+        //     });
+    </script>
+</body>
+</html>

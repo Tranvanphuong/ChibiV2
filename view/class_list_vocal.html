@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Vocabulary Classes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs/lib/anime.iife.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff7f0;
+        }
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .class-card {
+            transition: all 0.3s ease;
+        }
+        .kanji {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-orange-600 mb-4" data-aos="fade-down">Japanese Vocabulary Classes</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Select your class level and start learning essential Japanese vocabulary today!
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Class 1 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Beginner</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 1</h2>
+                        <span class="kanji text-orange-600">一</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Basic greetings, numbers, and everyday expressions.</p>
+                    <button onclick="selectClass(1)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class 2 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Elementary</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 2</h2>
+                        <span class="kanji text-orange-600">二</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Family terms, colors, and simple sentence structures.</p>
+                    <button onclick="selectClass(2)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class 3 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Pre-Intermediate</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 3</h2>
+                        <span class="kanji text-orange-600">三</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Time expressions, daily activities, and more verbs.</p>
+                    <button onclick="selectClass(3)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class 4 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="500">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Intermediate</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 4</h2>
+                        <span class="kanji text-orange-600">四</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Shopping vocabulary, directions, and compound sentences.</p>
+                    <button onclick="selectClass(4)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class 5 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="600">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Upper Intermediate</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 5</h2>
+                        <span class="kanji text-orange-600">五</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Workplace terms, travel phrases, and complex grammar.</p>
+                    <button onclick="selectClass(5)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class 6 -->
+            <div class="class-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="700">
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-orange-500 font-semibold mb-1">Advanced</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Class 6</h2>
+                        <span class="kanji text-orange-600">六</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Idiomatic expressions, formal speech, and kanji compounds.</p>
+                    <button onclick="selectClass(6)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <span>Select Class</span>
+                        <i data-feather="arrow-right" class="ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-20 text-center text-gray-500">
+            <p>© 2023 Japanese Vocabulary Learning. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function selectClass(classNumber) {
+            alert(`You have selected Class ${classNumber}! This would normally redirect to the class content.`);
+            // In a real implementation, you would redirect to the class page:
+            // window.location.href = `class${classNumber}.html`;
+        }
+
+        // Initialize animations and icons
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            feather.replace();
+        });
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            });
+    </script>
+    <script>AOS.init();</script>
+    <script>feather.replace();</script>
+</body>
+</html>
