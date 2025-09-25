@@ -85,8 +85,8 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-orange-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">ID</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Lớp</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Kanji Chính</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Kanji</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Hiragana</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-orange-600 uppercase tracking-wider">Romaji</th>
@@ -166,35 +166,41 @@
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Kanji Main -->
+                            <div>
+                                <label for="kanjiMain" class="block text-sm font-medium text-gray-700">Kanji Chính</label>
+                                <input type="text" id="kanjiMain" name="kanjiMain" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
+                            </div>
+                            
                             <!-- Kanji -->
                             <div>
                                 <label for="kanji" class="block text-sm font-medium text-gray-700">Kanji</label>
                                 <input type="text" id="kanji" name="kanji" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
                             </div>
-                            
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Hiragana -->
                             <div>
                                 <label for="hiragana" class="block text-sm font-medium text-gray-700">Hiragana <span class="text-red-500">*</span></label>
                                 <input type="text" id="hiragana" name="hiragana" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
                             </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Romaji -->
                             <div>
                                 <label for="romaji" class="block text-sm font-medium text-gray-700">Romaji <span class="text-red-500">*</span></label>
                                 <input type="text" id="romaji" name="romaji" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
                             </div>
                             
+                        </div>
+                        
+                        <!-- Audio URL -->
+                        <div>
+                            
                             <!-- Vietnamese Meaning -->
                             <div>
                                 <label for="meaning" class="block text-sm font-medium text-gray-700">Nghĩa tiếng Việt <span class="text-red-500">*</span></label>
                                 <input type="text" id="meaning" name="meaning" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
                             </div>
-                        </div>
-                        
-                        <!-- Audio URL -->
-                        <div>
                             <label for="audioUrl" class="block text-sm font-medium text-gray-700">Audio URL</label>
                             <input type="url" id="audioUrl" name="audioUrl" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md border">
                             <div id="audioPreview" class="mt-2 hidden">

@@ -61,7 +61,7 @@ async function addVocabulary(vocabData) {
 async function updateVocabulary(id, vocabData) {
     showLoading();
     try {
-        const response = await fetch(`${API_BASE_URL}${id}`, {
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
             method: 'PUT',
             headers: {
                 'accept': 'application/json',
@@ -91,7 +91,7 @@ async function deleteVocabulary(id) {
     }
     showLoading();
     try {
-        const response = await fetch(`${API_BASE_URL}${id}`, {
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
             method: 'DELETE',
             headers: {
                 'accept': 'application/json'
@@ -114,7 +114,7 @@ async function deleteVocabulary(id) {
 async function getVocabularyById(id) {
     showLoading();
     try {
-        const response = await fetch(`${API_BASE_URL}${id}`, {
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
             headers: {
                 'accept': 'application/json'
             }
@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const vocabData = {
             class_id: parseInt(document.getElementById('classId').value),
+            kanji_main: document.getElementById('kanjiMain').value || null,
             kanji: document.getElementById('kanji').value || null,
             hiragana: document.getElementById('hiragana').value,
             romaji: document.getElementById('romaji').value,
@@ -246,14 +247,14 @@ function renderVocabTable(data) {
         const row = document.createElement('tr');
         row.className = 'hover:bg-orange-100';
         row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.id}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.class_id}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.kanji_main || '-'}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.kanji || '-'}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.hiragana}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.romaji}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${vocab.nghia}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                ${vocab.audio_url ? `<i class="fas fa-volume-up audio-icon" data-audio-url="${vocab.audio_url}"></i>` : '-'}
+                <i class="fas fa-volume-up audio-icon" data-word="${vocab.hiragana}"></i>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <div class="flex space-x-2">
@@ -295,15 +296,43 @@ function renderVocabTable(data) {
     // Add event listeners for audio icons
     document.querySelectorAll('.audio-icon').forEach(icon => {
         icon.addEventListener('click', function() {
-            const audioUrl = this.getAttribute('data-audio-url');
-            if (audioUrl) {
-                const audio = new Audio(audioUrl);
-                audio.play();
+            const word = this.getAttribute('data-word');
+            if (word) {
+                playAudio(word);
             } else {
-                alert('Không có URL âm thanh.');
+                alert('Không có từ vựng để phát âm.');
             }
         });
     });
+}
+
+// Function to play audio from API
+async function playAudio(word) {
+    const API_SPEAK_BASE_URL = getSpeakApiBaseUrl(); // Get base URL from config.js
+    const API_SPEAK_ENDPOINT = `${API_SPEAK_BASE_URL}/audio/speak?word=${encodeURIComponent(word)}`;
+
+    try {
+        const response = await fetch(API_SPEAK_ENDPOINT, {
+            headers: {
+                'accept': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.audio_path) {
+            // Combine the local backend URL with the audio_path
+            const fullAudioUrl = `${API_SPEAK_BASE_URL}${data.audio_path}`;
+            const audio = new Audio(fullAudioUrl);
+            audio.play();
+        } else {
+            alert('Không tìm thấy đường dẫn âm thanh.');
+        }
+    } catch (error) {
+        console.error('Error playing audio:', error);
+        alert('Không thể phát âm thanh cho từ này.');
+    }
 }
 
 // Edit vocabulary
@@ -317,6 +346,7 @@ async function editVocabulary(id) {
     modalTitle.textContent = "Chỉnh sửa từ vựng";
     document.getElementById('vocabId').value = vocab.id;
     document.getElementById('classId').value = vocab.class_id;
+    document.getElementById('kanjiMain').value = vocab.kanji_main || '';
     document.getElementById('kanji').value = vocab.kanji || '';
     document.getElementById('hiragana').value = vocab.hiragana;
     document.getElementById('romaji').value = vocab.romaji;
