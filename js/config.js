@@ -1,4 +1,4 @@
-const API_BE_URL = 'http://127.0.0.1:8000';
+const API_BE_URL = 'https://chibi-be.onrender.com';
 
 window.getApiUrl = function(controller = '') {
     // Đảm bảo API_BE_URL không có dấu '/' ở cuối để tránh lỗi '//' khi nối chuỗi
