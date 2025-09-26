@@ -1,100 +1,41 @@
-// Sample vocabulary data
-const vocabulary = [
-    {
-        kanji: "日本語",
-        hiragana: "にほんご",
-        romaji: "Chibi",
-        meaning: "Tiếng Nhật",
-        audio: "https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E6%97%A5%E6%9C%AC%E8%AA%9E&kana=%E3%81%AB%E3%81%BB%E3%82%93%E3%81%94"
-    },
-    {
-        kanji: "学生",
-        hiragana: "がくせい",
-        romaji: "Gakusei",
-        meaning: "Học sinh",
-        audio: "https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E5%AD%A6%E7%94%9F&kana=%E3%81%8C%E3%81%8F%E3%81%9B%E3%81%84"
-    },
-    {
-        kanji: "本",
-        hiragana: "ほん",
-        romaji: "Hon",
-        meaning: "Sách",
-        audio: "https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E6%9C%AC&kana=%E3%81%BB%E3%82%93"
-    },
-    {
-        kanji: "水",
-        hiragana: "みず",
-        romaji: "Mizu",
-        meaning: "Nước",
-        audio: "https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E6%B0%B4&kana=%E3%81%BF%E3%81%9A"
-    },
-    {
-        kanji: "食べ物",
-        hiragana: "たべもの",
-        romaji: "Tabemono",
-        meaning: "Thức ăn",
-        audio: "https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E9%A3%9F%E3%81%B9%E7%89%A9&kana=%E3%81%9F%E3%81%B9%E3%82%82%E3%81%AE"
-    }
-];
-
 // Review list
 let reviewList = [];
-let currentWordIndex = 0;
 let currentCardIndex = 0;
+let currentVocabForReview = null; // To store the vocabulary item currently displayed in tu_vung.html
 
-// DOM elements
-let kanjiDisplay, hiraganaDisplay, romajiDisplay, meaningDisplay;
-let playAudioBtn, wordAudio, addToReviewBtn, nextWordBtn;
-let flashcard, flipCardBtn, nextCardBtn, reviewListContainer;
-let fcKanji, fcHiragana, fcRomaji, fcMeaning;
+// DOM elements (will be initialized by initFlashcardReview)
+let flashcard, flipCardBtn, nextCardBtn, reviewListContainer, addToReviewBtn;
+let fcKanji, fcHiragana, fcRomaji, fcMeaning, fcAudioIcon, mainVocabAudioIcon; // Added fcAudioIcon and mainVocabAudioIcon
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Functions to be called from tu_vung.html
+export function initFlashcardReview() {
     // Get DOM elements
-    kanjiDisplay = document.querySelector('.kanji-display');
-    hiraganaDisplay = document.querySelector('.hiragana-display');
-    romajiDisplay = document.querySelector('.romaji-display');
-    meaningDisplay = document.querySelector('.meaning-display');
-    playAudioBtn = document.getElementById('playAudio');
-    wordAudio = document.getElementById('wordAudio');
-    addToReviewBtn = document.getElementById('addToReview');
-    nextWordBtn = document.getElementById('nextWord');
     flashcard = document.getElementById('flashcard');
     flipCardBtn = document.getElementById('flipCard');
     nextCardBtn = document.getElementById('nextCard');
     reviewListContainer = document.getElementById('reviewList');
+    addToReviewBtn = document.getElementById('addToReview');
     fcKanji = document.getElementById('fc-kanji');
     fcHiragana = document.getElementById('fc-hiragana');
     fcRomaji = document.getElementById('fc-romaji');
     fcMeaning = document.getElementById('fc-meaning');
-    
-    // Initialize with first word
-    displayCurrentWord();
-    
+    fcAudioIcon = document.getElementById('fc-audio-icon'); // Initialize fcAudioIcon
+    mainVocabAudioIcon = document.getElementById('main-vocab-audio-icon'); // Initialize mainVocabAudioIcon
+
     // Event listeners
-    if (playAudioBtn) {
-        playAudioBtn.addEventListener('click', () => {
-            if (wordAudio) wordAudio.play();
-        });
-    }
-    
     if (addToReviewBtn) {
         addToReviewBtn.addEventListener('click', () => {
-            const currentWord = vocabulary[currentWordIndex];
-            if (!reviewList.some(word => word.kanji === currentWord.kanji)) {
-                reviewList.push(currentWord);
-                updateReviewList();
-                showNotification('Đã thêm vào danh sách ôn tập!');
+            if (currentVocabForReview) {
+                if (!reviewList.some(word => word.id === currentVocabForReview.id)) {
+                    reviewList.push(currentVocabForReview);
+                    updateReviewList();
+                    showNotification('Đã thêm vào danh sách ôn tập!');
+                } else {
+                    showNotification('Từ này đã có trong danh sách ôn tập!', 'error');
+                }
             } else {
-                showNotification('Từ này đã có trong danh sách ôn tập!', 'error');
+                showNotification('Không có từ vựng để thêm vào danh sách ôn tập!', 'error');
             }
-        });
-    }
-    
-    if (nextWordBtn) {
-        nextWordBtn.addEventListener('click', () => {
-            currentWordIndex = (currentWordIndex + 1) % vocabulary.length;
-            displayCurrentWord();
         });
     }
     
@@ -117,25 +58,76 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
 
-// Functions
-function displayCurrentWord() {
-    const currentWord = vocabulary[currentWordIndex];
-    if (kanjiDisplay) kanjiDisplay.textContent = currentWord.kanji;
-    if (hiraganaDisplay) hiraganaDisplay.textContent = currentWord.hiragana;
-    if (romajiDisplay) romajiDisplay.textContent = currentWord.romaji;
-    if (meaningDisplay) meaningDisplay.textContent = currentWord.meaning;
-    if (wordAudio) wordAudio.src = currentWord.audio;
+    // Event listener for audio icon (flashcard)
+    if (fcAudioIcon) {
+        fcAudioIcon.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio-url');
+            if (audioUrl) {
+                const audio = new Audio(audioUrl);
+                audio.play();
+            } else {
+                showNotification('Không có URL âm thanh.', 'error');
+            }
+        });
+    }
+
+    // Event listener for main vocabulary audio icon
+    if (mainVocabAudioIcon) {
+        mainVocabAudioIcon.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio-url');
+            if (audioUrl) {
+                const audio = new Audio(audioUrl);
+                audio.play();
+            } else {
+                showNotification('Không có URL âm thanh.', 'error');
+            }
+        });
+    }
+
+    updateReviewList(); // Initialize review list display
 }
 
+export function setCurrentVocab(vocab) {
+    currentVocabForReview = vocab;
+
+    // Update main vocabulary audio icon
+    if (mainVocabAudioIcon) {
+        
+        mainVocabAudioIcon.setAttribute('data-audio-url', vocab.audio_url);
+        mainVocabAudioIcon.classList.remove('hidden');
+    
+    }
+}
+
+// Internal functions
 function displayCurrentCard() {
     if (reviewList.length > 0) {
         const currentCard = reviewList[currentCardIndex];
-        if (fcKanji) fcKanji.textContent = currentCard.kanji;
+        if (fcKanji) fcKanji.textContent = currentCard.kanji_main;
         if (fcHiragana) fcHiragana.textContent = currentCard.hiragana;
         if (fcRomaji) fcRomaji.textContent = currentCard.romaji;
-        if (fcMeaning) fcMeaning.textContent = currentCard.meaning;
+        if (fcMeaning) fcMeaning.textContent = currentCard.nghia;
+
+        // Handle audio icon visibility and data
+        if (fcAudioIcon) {
+            if (currentCard.audio_url) {
+                fcAudioIcon.setAttribute('data-audio-url', currentCard.audio_url);
+                fcAudioIcon.classList.remove('hidden');
+            } else {
+                fcAudioIcon.classList.add('hidden');
+                fcAudioIcon.removeAttribute('data-audio-url');
+            }
+        }
+    } else {
+        if (fcKanji) fcKanji.textContent = "Không có từ";
+        if (fcHiragana) fcHiragana.textContent = "Không có từ";
+        if (fcRomaji) fcRomaji.textContent = "Không có từ";
+        if (fcMeaning) fcMeaning.textContent = "Danh sách ôn tập trống";
+        if (fcAudioIcon) { // Hide audio icon if no vocabulary
+            fcAudioIcon.classList.add('hidden');
+            fcAudioIcon.removeAttribute('data-audio-url');
+        }
     }
 }
 
@@ -152,8 +144,8 @@ function updateReviewList() {
         html += `
             <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
                 <div>
-                    <div class="font-bold text-orange-700">${word.kanji}</div>
-                    <div class="text-sm text-gray-600">${word.meaning}</div>
+                    <div class="font-bold text-orange-700">${word.kanji_main}</div>
+                    <div class="text-sm text-gray-600">${word.nghia}</div>
                 </div>
                 <button class="remove-review text-red-500 hover:text-red-700" data-index="${index}">
                     <i class="fas fa-times"></i>
@@ -178,9 +170,12 @@ function updateReviewList() {
             
             if (reviewList.length > 0) {
                 displayCurrentCard();
+            } else {
+                displayCurrentCard(); // Update to show empty state
             }
         });
     });
+    displayCurrentCard(); // Update flashcard display after list changes
 }
 
 function showNotification(message, type = 'success') {
