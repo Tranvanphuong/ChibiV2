@@ -89,6 +89,15 @@
                 height: 250px;
             }
         }
+        .audio-icon {
+            cursor: pointer;
+            color: #f97316;
+            transition: all 0.2s;
+        }
+        .audio-icon:hover {
+            color: #ea580c;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -134,11 +143,7 @@
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-500 mb-1">Phát âm</label>
-                            <button id="playAudio" class="flex items-center bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded-lg transition">
-                                <i class="fas fa-volume-up mr-2"></i>
-                                <span>Nghe phát âm</span>
-                            </button>
-                            <audio id="wordAudio" src="https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=%E6%97%A5%E6%9C%AC%E8%AA%9E&kana=%E3%81%AB%E3%81%BB%E3%82%93%E3%81%94"></audio>
+                            <i id="main-vocab-audio-icon" class="fas fa-volume-up audio-icon text-2xl hidden"></i>
                         </div>
                     </div>
                 </div>
@@ -167,6 +172,7 @@
                     <div class="flashcard-back">
                         <div class="text-2xl font-bold text-orange-600 mb-4" id="fc-romaji">Nihongo</div>
                         <div class="text-xl text-gray-700" id="fc-meaning">Tiếng Nhật</div>
+                        <button id="fc-audio-icon" class="fas fa-volume-up audio-icon text-2xl mt-4 hidden"></button>
                     </div>
                 </div>
             </div>
@@ -194,9 +200,76 @@
     </div>
 
     <div id="footer-placeholder"></div>
-    <script src="../js/tu_vung.js"></script>
-    <script>
-        fetch('header.html')
+    <script type="module" src="../../js/tu_vung.js"></script>
+    <script type="module">
+        import { initFlashcardReview, setCurrentVocab } from '../../js/tu_vung.js';
+
+        async function fetchVocabularyById(vocabId) {
+            const apiUrl = `https://chibi-be.onrender.com/vocabulary/${vocabId}`;
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'accept': '*/*',
+                        'accept-language': 'en-US,en;q=0.9,vi;q=0.8',
+                        'origin': 'https://chibiv2.netlify.app',
+                        'priority': 'u=1, i',
+                        'referer': 'https://chibiv2.netlify.app/',
+                        'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+                        'sec-ch-ua-mobile': '?0',
+                        'sec-ch-ua-platform': '"Linux"',
+                        'sec-fetch-dest': 'empty',
+                        'sec-fetch-mode': 'cors',
+                        'sec-fetch-site': 'cross-site',
+                        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching vocabulary data:', error);
+                return null;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const vocabId = urlParams.get('vocab_id');
+            
+            initFlashcardReview(); // Initialize flashcard and review list functionality
+
+            if (vocabId) {
+                const vocab = await fetchVocabularyById(vocabId);
+                if (vocab) {
+                    console.log('Vocabulary Data:', vocab);
+
+                    document.querySelector('.kanji-display').textContent = vocab.kanji_main;
+                    document.querySelector('.hiragana-display').textContent = vocab.hiragana;
+                    document.querySelector('.romaji-display').textContent = vocab.romaji;
+                    document.querySelector('.meaning-display').textContent = vocab.nghia;
+                    // Audio playback for main vocab will be handled by js/tu_vung.js
+
+                    // Set current vocabulary for the review section
+                    setCurrentVocab(vocab);
+                } else {
+                    console.log('Vocabulary ID not found or invalid:', vocabId);
+                    document.querySelector('.kanji-display').textContent = "Không tìm thấy";
+                    document.querySelector('.hiragana-display').textContent = "Không tìm thấy";
+                    document.querySelector('.romaji-display').textContent = "Không tìm thấy";
+                    document.querySelector('.meaning-display').textContent = "Không tìm thấy từ vựng";
+                }
+            } else {
+                console.log('No Vocabulary ID found in URL.');
+                document.querySelector('.kanji-display').textContent = "Không có ID";
+                document.querySelector('.hiragana-display').textContent = "Không có ID";
+                document.querySelector('.romaji-display').textContent = "Không có ID";
+                document.querySelector('.meaning-display').textContent = "Không có ID từ vựng trong URL";
+            }
+        });
+
+        fetch('../../view/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;

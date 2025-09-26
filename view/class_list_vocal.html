@@ -144,9 +144,7 @@
 
     <script>
         function selectClass(classNumber) {
-            alert(`You have selected Class ${classNumber}! This would normally redirect to the class content.`);
-            // In a real implementation, you would redirect to the class page:
-            // window.location.href = `class${classNumber}.html`;
+            window.location.href = `vocabulary/vocabulary_in_class.html?class_id=${classNumber}`;
         }
 
         // Initialize animations and icons
@@ -158,7 +156,7 @@
             });
             feather.replace();
         });
-        fetch('header.html')
+        fetch('../view/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;

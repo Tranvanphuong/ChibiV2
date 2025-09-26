@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Vocabulary List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #FF7D33;
+            --primary-light: #FFE8DE;
+            --secondary: #4CAF50;
+            --accent: #FFC107;
+            --text: #333333;
+            --text-light: #666666;
+            --bg: #F9F9F9;
+            --card-bg: #FFFFFF;
+            --divider: #EEEEEE;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: var(--card-bg);
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .title {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .counter {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            background-color: var(--primary-light);
+            border-radius: 20px;
+            padding: 4px;
+        }
+        
+        .view-toggle-btn {
+            padding: 8px 16px;
+            border-radius: 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .view-toggle-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .search-filter-container {
+            padding: 16px;
+            background-color: var(--card-bg);
+            margin-bottom: 8px;
+        }
+        
+        .search-bar {
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border-radius: 8px;
+            border: 1px solid var(--divider);
+            font-size: 14px;
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .filter-dropdown {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--divider);
+            background-color: white;
+            color: var(--text);
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+        
+        /* List View Styles */
+        .list-view {
+            display: block;
+            padding: 0 16px;
+        }
+        
+        .vocab-item-list {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .vocab-item-list.learned {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .japanese-word {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .furigana {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .meaning {
+            font-size: 16px;
+            color: var(--text);
+        }
+        
+        .action-icons {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .action-icon.favorite.active {
+            color: var(--accent);
+        }
+        
+        .action-icon.learned.active {
+            color: var(--secondary);
+        }
+        
+        /* Grid View Styles */
+        .grid-view {
+            display: none;
+            padding: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .vocab-item-grid {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .vocab-item-grid.learned {
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .grid-japanese {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .grid-furigana {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .grid-meaning {
+            font-size: 16px;
+            color: var(--text);
+        }
+        
+        .grid-actions {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 16px;
+            gap: 8px;
+        }
+        
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            border: 1px solid var(--divider);
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .pagination-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Loading States */
+        .loading-skeleton {
+            padding: 16px;
+        }
+        
+        .skeleton-item-list {
+            height: 80px;
+            background-color: #EEE;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .skeleton-item-grid {
+            aspect-ratio: 1;
+            background-color: #EEE;
+            border-radius: 8px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            padding: 40px 16px;
+            text-align: center;
+            color: var(--text-light);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (min-width: 768px) {
+            .grid-view {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="header">
+        <h1 class="title">Bài 1: Chào hỏi</h1>
+        <div class="counter">50 từ / 15 đã học</div>
+        <div class="flex justify-between items-center mt-4">
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" id="list-view-btn">
+                    <i class="fas fa-list"></i>
+                    <span>Danh sách</span>
+                </button>
+                <button class="view-toggle-btn" id="grid-view-btn">
+                    <i class="fas fa-th-large"></i>
+                    <span>Lưới</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="search-filter-container">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm từ vựng...">
+        </div>
+        <select class="filter-dropdown">
+            <option value="all">Tất cả từ vựng</option>
+            <option value="learned">Đã học</option>
+            <option value="unlearned">Chưa học</option>
+            <option value="favorites">Yêu thích</option>
+        </select>
+    </div>
+    
+    <!-- List View -->
+    <div class="list-view" id="list-view">
+        <!-- Vocabulary items will be loaded here -->
+    </div>
+    
+    <!-- Grid View -->
+    <div class="grid-view" id="grid-view">
+        <!-- Vocabulary items will be loaded here -->
+        <!-- Loading spinner for infinite scroll -->
+        <div class="loading-spinner" style="display: none; grid-column: 1 / -1; text-align: center; padding: 16px;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary);"></i>
+        </div>
+    </div>
+    
+    <!-- Loading State Example (commented out) -->
+    <!--
+    <div class="loading-skeleton" id="loading-skeleton">
+        <div class="skeleton-item-list"></div>
+        <div class="skeleton-item-list"></div>
+        <div class="skeleton-item-list"></div>
+    </div>
+    
+    <div class="loading-skeleton grid-view" id="loading-skeleton-grid" style="display: none;">
+        <div class="skeleton-item-grid"></div>
+        <div class="skeleton-item-grid"></div>
+        <div class="skeleton-item-grid"></div>
+        <div class="skeleton-item-grid"></div>
+        <div class="skeleton-item-grid"></div>
+        <div class="skeleton-item-grid"></div>
+    </div>
+    -->
+    
+    <!-- Empty State Example (commented out) -->
+    <!--
+    <div class="empty-state" id="empty-state" style="display: none;">
+        <i class="far fa-folder-open"></i>
+        <p>Không tìm thấy từ vựng nào</p>
+        <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+        <button>Xem tất cả từ vựng</button>
+    </div>
+    -->
+    
+    <script>
+        function selectVocabulary(vocabId) {
+            window.location.href = `tu_vung.html?vocab_id=${vocabId}`;
+        }
+
+        // Function to create a vocabulary item for list view
+        function createVocabListItem(vocab) {
+            const item = document.createElement('div');
+            item.className = 'vocab-item-list';
+            item.setAttribute('data-vocab-id', vocab.id);
+            item.setAttribute('onclick', `selectVocabulary('${vocab.id}')`);
+            item.innerHTML = `
+                <div class="japanese-word">${vocab.kanji_main}</div>
+                <div class="furigana">${vocab.hiragana}</div>
+                <div class="meaning">${vocab.nghia}</div>
+                <div class="action-icons">
+                    <div class="action-icon favorite">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="action-icon learned">
+                        <i class="far fa-check-circle"></i>
+                    </div>
+                </div>
+            `;
+            return item;
+        }
+
+        // Function to create a vocabulary item for grid view
+        function createVocabGridItem(vocab) {
+            const item = document.createElement('div');
+            item.className = 'vocab-item-grid';
+            item.setAttribute('data-vocab-id', vocab.id);
+            item.setAttribute('onclick', `selectVocabulary('${vocab.id}')`);
+            item.innerHTML = `
+                <div class="grid-japanese">${vocab.kanji_main}</div>
+                <div class="grid-furigana">${vocab.hiragana}</div>
+                <div class="grid-meaning">${vocab.nghia}</div>
+                <div class="grid-actions">
+                    <div class="action-icon favorite">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="action-icon learned">
+                        <i class="far fa-check-circle"></i>
+                    </div>
+                </div>
+            `;
+            return item;
+        }
+
+        // Function to fetch and display vocabulary
+        async function fetchAndDisplayVocabulary(classId) {
+            const apiUrl = `https://chibi-be.onrender.com/vocabulary/?class_id=${classId}`;
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'accept': '*/*',
+                        'accept-language': 'en-US,en;q=0.9,vi;q=0.8',
+                        'origin': 'https://chibiv2.netlify.app',
+                        'priority': 'u=1, i',
+                        'referer': 'https://chibiv2.netlify.app/',
+                        'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+                        'sec-ch-ua-mobile': '?0',
+                        'sec-ch-ua-platform': '"Linux"',
+                        'sec-fetch-dest': 'empty',
+                        'sec-fetch-mode': 'cors',
+                        'sec-fetch-site': 'cross-site',
+                        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                    }
+                });
+                const data = await response.json();
+                
+                const listView = document.getElementById('list-view');
+                const gridView = document.getElementById('grid-view');
+                listView.innerHTML = ''; // Clear existing items
+                gridView.innerHTML = ''; // Clear existing items
+
+                if (data && data.length > 0) {
+                    data.forEach(vocab => {
+                        listView.appendChild(createVocabListItem(vocab));
+                        gridView.insertBefore(createVocabGridItem(vocab), document.querySelector('.loading-spinner'));
+                    });
+                } else {
+                    listView.innerHTML = '<div class="empty-state"><i class="far fa-folder-open"></i><p>Không tìm thấy từ vựng nào</p><p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p><button>Xem tất cả từ vựng</button></div>';
+                    gridView.innerHTML = '<div class="empty-state"><i class="far fa-folder-open"></i><p>Không tìm thấy từ vựng nào</p><p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p><button>Xem tất cả từ vựng</button></div>';
+                }
+
+                // Reattach event listeners for favorite and learned states
+                attachActionIconListeners();
+
+            } catch (error) {
+                console.error('Error fetching vocabulary data:', error);
+                const listView = document.getElementById('list-view');
+                const gridView = document.getElementById('grid-view');
+                listView.innerHTML = '<div class="empty-state"><p>Lỗi khi tải từ vựng. Vui lòng thử lại sau.</p></div>';
+                gridView.innerHTML = '<div class="empty-state"><p>Lỗi khi tải từ vựng. Vui lòng thử lại sau.</p></div>';
+            }
+        }
+
+        function attachActionIconListeners() {
+            document.querySelectorAll('.action-icon.favorite').forEach(icon => {
+                icon.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent item click from triggering
+                    this.classList.toggle('active');
+                    const starIcon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        starIcon.classList.remove('far');
+                        starIcon.classList.add('fas');
+                    } else {
+                        starIcon.classList.remove('fas');
+                        starIcon.classList.add('far');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.action-icon.learned').forEach(icon => {
+                icon.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent item click from triggering
+                    this.classList.toggle('active');
+                    const checkIcon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        checkIcon.classList.remove('far');
+                        checkIcon.classList.add('fas');
+                        this.closest('.vocab-item-list, .vocab-item-grid').classList.add('learned');
+                    } else {
+                        checkIcon.classList.remove('fas');
+                        checkIcon.classList.add('far');
+                        this.closest('.vocab-item-list, .vocab-item-grid').classList.remove('learned');
+                    }
+                    
+                    // Update learned count in header (simplified)
+                    const counter = document.querySelector('.counter');
+                    const currentCount = parseInt(counter.textContent.match(/\d+/)[0]);
+                    if (this.classList.contains('active')) {
+                        counter.textContent = counter.textContent.replace(/\d+/, currentCount + 1);
+                    } else {
+                        counter.textContent = counter.textContent.replace(/\d+/, currentCount - 1);
+                    }
+                });
+            });
+        }
+
+        // Toggle between list and grid views
+        const listViewBtn = document.getElementById('list-view-btn');
+        const gridViewBtn = document.getElementById('grid-view-btn');
+        const listView = document.getElementById('list-view');
+        const gridView = document.getElementById('grid-view');
+        
+        listViewBtn.addEventListener('click', () => {
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            listView.style.display = 'block';
+            gridView.style.display = 'none';
+        });
+        
+        gridViewBtn.addEventListener('click', () => {
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            gridView.style.display = 'grid';
+            listView.style.display = 'none';
+        });
+        
+        // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const classId = urlParams.get('class_id');
+            if (classId) {
+                fetchAndDisplayVocabulary(classId);
+            } else {
+                console.error('No class_id found in URL.');
+                listView.innerHTML = '<div class="empty-state"><p>Không tìm thấy ID lớp học.</p></div>';
+                gridView.innerHTML = '<div class="empty-state"><p>Không tìm thấy ID lớp học.</p></div>';
+            }
+
+            // Load header
+            fetch('../../view/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    const mobileMenuButton = document.getElementById('mobile-menu-button');
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenuButton) {
+                        mobileMenuButton.addEventListener('click', () => {
+                            mobileMenu.classList.toggle('hidden');
+                        });
+                    }
+                });
+        });
+        
+        // Simulate infinite scroll for grid view (modified to work with dynamic content)
+        window.addEventListener('scroll', function() {
+            if (gridView.style.display === 'grid' && 
+                window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                const loadingSpinner = document.querySelector('.loading-spinner');
+                if (loadingSpinner && loadingSpinner.style.display === 'none') { // Only load if not already loading
+                    loadingSpinner.style.display = 'block';
+                    
+                    // Simulate loading more items (in a real app, this would be another API call)
+                    setTimeout(() => {
+                        loadingSpinner.style.display = 'none';
+                        // addMoreGridItems(); // This function is no longer needed as data is fetched once
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
