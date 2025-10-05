@@ -134,13 +134,13 @@
         }
         
         .japanese-word {
-            font-size: 20px;
+            font-size: 36px;
             font-weight: 600;
             margin-bottom: 4px;
         }
         
         .furigana {
-            font-size: 14px;
+            font-size:36px;
             color: var(--primary);
             margin-bottom: 4px;
         }
@@ -209,7 +209,7 @@
         }
         
         .grid-furigana {
-            font-size: 14px;
+            font-size:38px;
             color: var(--primary);
             margin-bottom: 8px;
         }
@@ -439,7 +439,7 @@
 
         // Function to fetch and display vocabulary
         async function fetchAndDisplayVocabulary(classId) {
-            const apiUrl = `https://chibi-be.onrender.com/vocabulary/?class_id=${classId}`;
+            const apiUrl = `https://chibi-be.onrender.com/vocabulary?class_id=${classId}`;
             try {
                 const response = await fetch(apiUrl, {
                     headers: {

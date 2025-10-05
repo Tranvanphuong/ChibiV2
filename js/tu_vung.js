@@ -76,16 +76,46 @@ export function initFlashcardReview() {
     if (mainVocabAudioIcon) {
         mainVocabAudioIcon.addEventListener('click', function() {
             const audioUrl = this.getAttribute('data-audio-url');
-            if (audioUrl) {
+            if (audioUrl != 'null') {
                 const audio = new Audio(audioUrl);
                 audio.play();
             } else {
-                showNotification('Không có URL âm thanh.', 'error');
+                const word = this.getAttribute('data-kanji');
+                playAudio(word);
             }
         });
     }
 
     updateReviewList(); // Initialize review list display
+}
+
+async function playAudio(word) {
+    const API_SPEAK_BASE_URL = getSpeakApiBaseUrl(); // Get base URL from config.js
+    const API_SPEAK_ENDPOINT = `${API_SPEAK_BASE_URL}/audio/speak?word=${encodeURIComponent(word)}`;
+
+    try {
+        const response = await fetch(API_SPEAK_ENDPOINT, {
+            headers: {
+                'accept': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.audio_path) {
+            // Combine the local backend URL with the audio_path
+            const fullAudioUrl = `${API_SPEAK_BASE_URL}${data.audio_path}`;
+            const audio = new Audio(fullAudioUrl);
+            mainVocabAudioIcon.setAttribute('data-audio-url', fullAudioUrl);
+            audio.play();
+        } else {
+            alert('Không tìm thấy đường dẫn âm thanh.');
+        }
+    } catch (error) {
+        console.error('Error playing audio:', error);
+        alert('Không thể phát âm thanh cho từ này.');
+    }
 }
 
 export function setCurrentVocab(vocab) {
@@ -94,6 +124,7 @@ export function setCurrentVocab(vocab) {
     // Update main vocabulary audio icon
     if (mainVocabAudioIcon) {
         
+        mainVocabAudioIcon.setAttribute('data-kanji', vocab.kanji);
         mainVocabAudioIcon.setAttribute('data-audio-url', vocab.audio_url);
         mainVocabAudioIcon.classList.remove('hidden');
     
